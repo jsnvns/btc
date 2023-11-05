@@ -1,1 +1,54 @@
-hello
+import {
+  ChakraProvider,
+  Center,
+  CircularProgress,
+  CircularProgressLabel,
+  Text,
+} from "@chakra-ui/react";
+import { Timer } from "lucide-react";
+import { render } from "react-dom";
+import React, { useState, useEffect, useRef } from "react";
+const RandomCircularProgress = () => {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(
+      () => {
+        const randomProgress = Math.floor(Math.random() * 101);
+        setProgress(randomProgress);
+      },
+      Math.floor(Math.random() * 3000) + 1000,
+    );
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <ChakraProvider>
+      <Center h="100vh" flexDir="column">
+        <CircularProgress
+          value={progress}
+          color="#586d75"
+          size="200px"
+          thickness="16px"
+          trackColor="#e4e4e4"
+        >
+          <CircularProgressLabel fontSize="6xl">
+            {progress}%
+          </CircularProgressLabel>
+        </CircularProgress>
+        <Text
+          color="#586d75"
+          fontSize="2xl"
+          mt="4"
+          display="flex"
+          alignItems="center"
+        >
+          Please wait while verifying you're human!
+          <TimerIcon ml="2" size={6} />
+          <Text as="span" ml="1">
+            {Math.floor(Math.random() * 3) + 1}s
+          </Text>
+        </Text>
+      </Center>
+    </ChakraProvider>
+  );
+};
+render(<RandomCircularProgress />, document.getElementById("root"));
